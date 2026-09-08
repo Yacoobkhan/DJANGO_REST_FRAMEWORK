@@ -2,17 +2,17 @@ from django.db import models
 from django.conf import settings 
 from django.db.models import Q
 
-User = settings.AUTH_USER_MODEL #auth.user
+User = settings.AUTH_USER_MODEL #auth.user (configured user model)
 
 # Create your models here.
 
 class ProductQuerySet(models.QuerySet):
-    def is_public(self):
+    def is_public(self):  #creates a custom queryset method 
         return self.filter(public = True)
 
     def search(self, query, user=None):
         lookup = Q(title__icontains=query) | Q(content__icontains=query)
-        qs = self.is_public().filter(lookup)
+        qs = self.is_public().filter(lookup)  #public products that match the search products
         if user is not None:
             qs2 = self.filter(user=user).filter(lookup)
             qs = (qs | qs2).distinct()
