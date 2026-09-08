@@ -8,7 +8,7 @@ password = getpass("Enter your password: \n")
 get_auth_response = requests.post(
     endpoint_auth,
     json={
-        'username': 'nithin',
+        'username': username,
         'password': password
     }
 )
@@ -22,7 +22,11 @@ if get_auth_response.status_code == 200:
     }
     endpoint="http://localhost:8000/api/products/"
     get_response = requests.get(endpoint,headers=headers)
-    print(get_response.json())
+    data = get_response.json()
+    next_url = data['next']
+    results = data['results']
+    # print(next_url)
+    print(results)
 
 # print("Status Code:", get_auth_response.status_code)
 # print("Content-Type:", get_auth_response.headers.get('Content-Type'))
