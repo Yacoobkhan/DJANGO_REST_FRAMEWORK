@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import datetime
+
 from pathlib import Path
 from decouple import config
 
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'algoliasearch_django',
+    'rest_framework_simplejwt',
 
     'api',
     'products',
@@ -134,6 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'api.authentication.TokenAuthentication',
     ],
 
@@ -150,4 +154,10 @@ ALGOLIA = {
     'APPLICATION_ID': config('ALGOLIA_APPLICATION_ID'),
     'API_KEY': config('ALGOLIA_API_KEY'),
     'INDEX_PREFIX': config('ALGOLIA_INDEX_PREFIX'),
+}
+
+SIMPLE_JWT={
+    "AUTH_HEADERS_TYPE" : ['Bearer'],
+    "AUTH_TOKEN_LIFETIME" : datetime.timedelta(seconds=30),
+    "REFRESH_TOKEN_LIFETIME" : datetime.timedelta(minutes=1),
 }
