@@ -1,18 +1,18 @@
-from dataclasses import dataclass
-import requests
-from getpass import getpass
-import pathlib 
-import json
+from dataclasses import dataclass # instead of manually writing init() method dataclass creates field
+import requests #make HTTP requests
+from getpass import getpass #used to ask password without displaying in terminal
+import pathlib #used to work with file path
+import json #convert JSON into python objects and vice versa.
 
 
 @dataclass
-class JWTClient:
+class JWTClient:  #class contains all login to communicate wiith JWT
     """
     Use a dataclass decorator
     to simply the class construction
     """
-    access:str = None
-    refresh:str = None
+    access:str = None #access token
+    refresh:str = None #refresh token
     # ensure this matches your simplejwt config
     header_type: str = "Bearer"
     # this assumesy ou have DRF running on localhost:8000
@@ -20,7 +20,7 @@ class JWTClient:
     # this file path is insecure
     cred_path: pathlib.Path = pathlib.Path("creds.json")
 
-    def __post_init__(self):
+    def __post_init__(self): #runs automatically after the object is created
         if self.cred_path.exists(): 
             """
             You have stored creds,
@@ -100,7 +100,7 @@ class JWTClient:
         print('access granted')
         self.write_creds(r.json())
 
-    def write_creds(self, data:dict):
+    def write_creds(self, data:dict): #After login
         """
         Store credentials as a local file
         and update instance with correct
