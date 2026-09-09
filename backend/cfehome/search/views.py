@@ -12,7 +12,7 @@ class SearchListView(generics.GenericAPIView):
             user = request.user.username
         query = request.GET.get('q')
         public = str(request.GET.get('public')) != '0'
-        tag = request.GET.get('q')
+        tag = request.GET.get('tag')
         print(query,public,tag,user)
         if not query:
             return Response('',status=400)
