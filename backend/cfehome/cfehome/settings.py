@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'algoliasearch_django',
     'rest_framework_simplejwt',
+    'corsheaders',
 
     'api',
     'products',
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -161,3 +163,8 @@ SIMPLE_JWT={
     "AUTH_TOKEN_LIFETIME" : datetime.timedelta(seconds=30),
     "REFRESH_TOKEN_LIFETIME" : datetime.timedelta(minutes=1),
 }
+
+CORS_URLS_REGEX=r'^/api/.*'
+CORS_ALLOWED_ORIGINS=[
+    'http://localhost:8111',
+]
