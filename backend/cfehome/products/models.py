@@ -39,6 +39,21 @@ class Product(models.Model):
     public = models.BooleanField(default=True)
     publish_timestamp = models.DateTimeField(default=timezone.now)
 
+    def get_absolute_url(self):
+        return f"/api/products/{self.pk}/"
+
+    @property
+    def endpoint(self):
+        return self.get_absolute_url()
+
+    @property
+    def path(self):
+        return f"/products/{self.pk}/"
+
+    @property
+    def body(self):
+        return self.content
+
     objects = ProductManager()
 
     def is_public(self) -> bool:
