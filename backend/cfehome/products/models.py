@@ -1,8 +1,12 @@
+import random
 from django.db import models
 from django.conf import settings 
 from django.db.models import Q
+from django.utils import timezone
 
 User = settings.AUTH_USER_MODEL #auth.user (configured user model)
+
+TAGS_MODEL_VALUES = ['electronics','cars','Hello','movies','abcde']
 
 # Create your models here.
 
@@ -33,8 +37,15 @@ class Product(models.Model):
     content= models.TextField(blank=True,null=True)
     price = models.DecimalField(max_digits=15,decimal_places=2,default=99.99)
     public = models.BooleanField(default=True)
+    publish_timestamp = models.DateTimeField(default=timezone.now)
 
     objects = ProductManager()
+
+    def is_public(self) -> bool:
+        return self.public
+
+    def get_tags_list(self):
+        return [random.choice(TAGS_MODEL_VALUES)]
 
     @property
     def sale_price(self):
