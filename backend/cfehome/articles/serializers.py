@@ -11,7 +11,7 @@ class ArticleSerializer(serializers.ModelSerializer):
             'pk',
             'user',
             'title',
-            'public',
+            'is_public',
             'body',
             'path',
             'endpoint',
