@@ -1,24 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Form</title>
 </head>
-<body>
-    <form id="login-form" method="POST">
-        <input type="text" name="username" placeholder="Enter Name" />
-        <input type="password" name="password" placeholder="Enter Password"/>
-        <input type="submit"  value="Login"/><br>
-    </form><br>
 
-    <form id="search-form" method="GET">
-        <input type="text" name="q" placeholder="Your Search" />
-        <input type="submit"  value="search"/>
+<body>
+
+    <form id="login-form" method="POST">
+
+        <input
+            type="text"
+            name="username"
+            placeholder="Enter Name"
+        />
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Enter Password"
+        />
+
+        <input
+            type="submit"
+            value="Login"
+        />
+
     </form>
 
-    <div id="'content-container"></div>
+    <br>
+
+
+    <form id="search-form" method="GET">
+
+        <input
+            type="text"
+            name="q"
+            placeholder="Your Search"
+        />
+
+        <input
+            type="submit"
+            value="search"
+        />
+
+    </form>
+
+
+    <div id="content-container"></div>
+
 
     <script src="./client.js"></script>
+
 </body>
+
 </html>

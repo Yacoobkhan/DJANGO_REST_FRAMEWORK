@@ -1,3 +1,4 @@
+console.log("NEW CLIENT.JS LOADED")
 const contentContainer = document.getElementById('content-container')
 const loginForm = document.getElementById('login-form')
 const searchForm = document.getElementById('search-form')
@@ -5,20 +6,29 @@ const searchForm = document.getElementById('search-form')
 const baseEndpoint = 'http://localhost:8000/api'
 
 
-// Login form event listener
+// =========================
+// LOGIN
+// =========================
+
 if (loginForm) {
     loginForm.addEventListener('submit', handleLogin)
 }
+
+
+// =========================
+// SEARCH
+// =========================
 
 if (searchForm) {
     searchForm.addEventListener('submit', handleSearch)
 }
 
 
-// Handle Login
-function handleLogin(event) {
+// =========================
+// HANDLE LOGIN
+// =========================
 
-    console.log(event)
+function handleLogin(event) {
 
     event.preventDefault()
 
@@ -30,177 +40,192 @@ function handleLogin(event) {
 
     const bodyStr = JSON.stringify(loginObjectData)
 
-    console.log(loginObjectData)
-
-    console.log(bodyStr)
-
-
     const options = {
         method: "POST",
-
         headers: {
             "Content-Type": "application/json"
         },
-
         body: bodyStr
     }
 
-
     fetch(loginEndpoint, options)
-
-        .then(response => {
-
-            console.log(response)
-
-            return response.json()
-        })
-
+        .then(response => response.json())
         .then(authData => {
 
-            console.log(authData)
+            console.log("Login Data:", authData)
 
-            handleAuthData(authData, getProductList)
+            handleAuthData(authData)
+
+            getProductList()
         })
-
         .catch(err => {
-
-            console.log("err", err)
+            console.log("Login Error:", err)
         })
 }
 
+
+// =========================
+// HANDLE SEARCH
+// =========================
+
 function handleSearch(event) {
+
     event.preventDefault()
-    let formData = new FormData(searchForm)
-    let data = Object.fromEntries(formData)
-    let searchParams = new URLSearchParams(data)
+
+    console.log("SEARCH FUNCTION CALLED")
+
+    const formData = new FormData(searchForm)
+
+    const data = Object.fromEntries(formData)
+
+    const searchParams = new URLSearchParams(data)
+
     const endpoint = `${baseEndpoint}/search/?${searchParams}`
+
+    console.log("Search Endpoint:", endpoint)
+
+    const authToken = localStorage.getItem('access')
+
     const headers = {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
     }
-    const authToken = localStorage.getItem('access') 
+
     if (authToken) {
-        headers['Authorization'] = `Bearer ${authToken}`
+        headers["Authorization"] = `Bearer ${authToken}`
     }
+
     const options = {
         method: "GET",
         headers: headers
     }
-    fetch(endpoint, options) //  Promise
-    .then(response=>{
-        return response.json()
-    })
-    .then(data => {
-        const validData = isTokenNotValid(data)
-        if (validData && contentContainer){
-            contentContainer.innerHTML = ""
-            if (data && data.hits) {
-                let htmlStr  = ""
-                for (let result of data.hits) {
-                    htmlStr += "<li>"+ result.title + "</li>"
-                }
-                contentContainer.innerHTML = htmlStr
-                if (data.hits.length === 0) {
-                    contentContainer.innerHTML = "<p>No results found</p>"
-                }
-            } else {
-                contentContainer.innerHTML = "<p>No results found</p>"
+
+    fetch(endpoint, options)
+        .then(response => response.json())
+        .then(data => {
+
+            console.log("ALGOLIA SEARCH RESPONSE:", data)
+
+            const validData = isTokenNotValid(data)
+
+            if (!validData) {
+                return
             }
-        }
-    })
-    .catch(err=> {
-        console.log('err', err)
-    })
+
+            if (!data.hits || data.hits.length === 0) {
+
+                contentContainer.innerHTML = "<p>No results found</p>"
+
+                return
+            }
+
+            // Get the first matching product ID
+            const productId = data.hits[0].objectID
+
+            console.log("MATCHED PRODUCT ID:", productId)
+
+            // Get complete Product JSON
+            getProductDetail(productId)
+        })
+        .catch(err => {
+
+            console.log("Search Error:", err)
+
+        })
 }
 
-// Write API data into HTML container
+
+// =========================
+// GET PRODUCT DETAIL
+// =========================
+
+function getProductDetail(productId) {
+
+    console.log("Getting Product Detail:", productId)
+
+    const endpoint = `${baseEndpoint}/products/${productId}`
+
+    console.log("Product Detail Endpoint:", endpoint)
+
+    const options = getFetchOptions(null, null)
+
+    fetch(endpoint, options)
+        .then(response => response.json())
+        .then(data => {
+
+            console.log("FULL PRODUCT JSON:", data)
+
+            const validData = isTokenNotValid(data)
+
+            if (!validData) {
+                return
+            }
+
+            writeToContainer(data)
+        })
+        .catch(err => {
+
+            console.log("Product Detail Error:", err)
+
+        })
+}
+
+
+// =========================
+// WRITE JSON TO SCREEN
+// =========================
+
 function writeToContainer(data) {
 
-    if (contentContainer) {
-
-        contentContainer.innerHTML =
-            "<pre>" +
-            JSON.stringify(data, null, 4) +
-            "</pre>"
+    if (!contentContainer) {
+        return
     }
+
+    contentContainer.innerHTML =
+        "<pre>" +
+        JSON.stringify(data, null, 4) +
+        "</pre>"
 }
 
 
-// Handle authentication data
-function handleAuthData(authData, callback) {
+// =========================
+// HANDLE AUTH DATA
+// =========================
+
+function handleAuthData(authData) {
 
     localStorage.setItem('access', authData.access)
 
     localStorage.setItem('refresh', authData.refresh)
-
-
-    if (callback) {
-
-        callback()
-    }
 }
 
 
-// Validate JWT access token
-function validateJWTToken() {
+// =========================
+// GET FETCH OPTIONS
+// =========================
 
-    const endpoint = `${baseEndpoint}/token/verify/`
-
-    const options = {
-
-        method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-
-            token: localStorage.getItem('access')
-
-        })
-    }
-
-
-    fetch(endpoint, options)
-
-        .then(response => {
-
-            return response.json()
-        })
-
-        .then(data => {
-
-            console.log(data)
-        })
-
-        .catch(err => {
-
-            console.log("err", err)
-        })
-}
-
-
-// Create Fetch Options
 function getFetchOptions(method, body) {
 
-    return {
-
+    const options = {
         method: method === null ? "GET" : method,
 
         headers: {
-
             "Content-Type": "application/json",
-
-            "Authorization":
-                `Bearer ${localStorage.getItem('access')}`
-        },
-
-        body: body ? JSON.stringify(body) : null
+            "Authorization": `Bearer ${localStorage.getItem('access')}`
+        }
     }
+
+    if (body) {
+        options.body = JSON.stringify(body)
+    }
+
+    return options
 }
 
 
-// Check whether JWT token is invalid
+// =========================
+// CHECK TOKEN
+// =========================
+
 function isTokenNotValid(jsonData) {
 
     if (
@@ -213,43 +238,37 @@ function isTokenNotValid(jsonData) {
         return false
     }
 
-
     return true
 }
 
 
-// Get Product List
+// =========================
+// GET PRODUCT LIST
+// =========================
+
 function getProductList() {
 
     const endpoint = `${baseEndpoint}/products/`
 
     const options = getFetchOptions(null, null)
 
-
     fetch(endpoint, options)
-
-        .then(response => {
-
-            console.log(response)
-
-            return response.json()
-        })
-
+        .then(response => response.json())
         .then(data => {
 
-            console.log(data)
+            console.log("PRODUCT LIST:", data)
 
             const validData = isTokenNotValid(data)
 
-
-            if (validData) {
-
-                writeToContainer(data)
+            if (!validData) {
+                return
             }
-        })
 
+            writeToContainer(data)
+        })
         .catch(err => {
 
-            console.log("err", err)
+            console.log("Product List Error:", err)
+
         })
 }
