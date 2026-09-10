@@ -21,16 +21,16 @@ class SearchListView(generics.GenericAPIView):
 
 class SearchArticleListView(generics.GenericAPIView):
     def get(self,request,*args,**kwargs):
-        # user = None
-        # if request.user.is_authenticated:
-        #     user = request.user.username
+        user = None
+        if request.user.is_authenticated:
+            user = request.user.username
         query = request.GET.get('q')
-        # public = str(request.GET.get('public')) != '0'
+        public = str(request.GET.get('public')) != '0'
         tag = request.GET.get('tag')
-        # print(query,public,tag,user)
+        print(query,public,tag,user)
         if not query:
             return Response('',status=400)
-        results = client.perform_article(query, tags=tag) # ,user=user,public=public
+        results = client.perform_article(query, tags=tag,user=user,is_public=public) 
         return Response(results)
 
 class SearchListOldView(generics.ListAPIView):

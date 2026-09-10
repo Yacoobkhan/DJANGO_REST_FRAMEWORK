@@ -12,13 +12,14 @@ class ArtcileIndex(AlgoliaIndex):
         'title',
         'body',
         'user',
+        'is_public',
         'publish_date',
         'path',
         'endpoint',
     ]
     settings = {
         'searchableAttributes': ['title', 'body'],
-        'attributesForFaceting': ['user'],
+        'attributesForFaceting': ['user','is_public'],
         'ranking': ['asc(publish_date)']
     }
     tags = 'get_tags_list'
