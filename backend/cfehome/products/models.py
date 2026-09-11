@@ -19,7 +19,7 @@ class ProductQuerySet(models.QuerySet):
         qs = self.is_public().filter(lookup)  #public products that match the search products
         if user is not None:
             qs2 = self.filter(user=user).filter(lookup)
-            qs = (qs | qs2).distinct()
+            qs = (qs | qs2).distinct() # distinct --> to avoid duplicate values
         return qs
 
 class ProductManager(models.Manager):
