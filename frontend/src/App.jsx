@@ -5,6 +5,7 @@ import Products from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
 import UpdateProduct from './pages/updateProduct'
 import CreateProduct from './pages/createProduct'
+import Search from './pages/Search'
 
 const App = () => {
 
@@ -48,6 +49,17 @@ const App = () => {
             }
           />
 
+          <Route
+              path="/search"
+              element={
+                isLoggedIn ? (
+                  <Search />
+                ) : (
+                  <Login onLogin={() => setIsLoggedIn(true)}/>
+                )
+              }
+          />
+          
           <Route
             path="/products/create"
             element={

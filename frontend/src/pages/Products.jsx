@@ -6,11 +6,22 @@ import ProductCard from '../components/ProductCard'
 
 const Products = ({onLogout}) => {
 
+  const [searchQuery,setSearchQuery] = useState('')
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   const navigate = useNavigate()
+
+  const handleSearch = (event) => {
+  event.preventDefault()
+
+  if (!searchQuery.trim()) {
+    return
+  }
+
+  navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`)
+}
 
   const loadProducts = async () => {
     setLoading(true)
@@ -39,6 +50,26 @@ const Products = ({onLogout}) => {
 
  return (
   <div className="p-6">
+
+    <form
+      onSubmit={handleSearch}
+      className="mb-6 flex gap-3"
+    >
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={(event) => setSearchQuery(event.target.value)}
+        placeholder="Search products..."
+        className="flex-1 rounded border border-gray-300 px-4 py-2"
+      />
+
+      <button
+        type="submit"
+        className="rounded bg-blue-600 px-5 py-2 text-white"
+      >
+        Search
+      </button>
+    </form>
 
     <div className="mb-6 flex items-center justify-between">
 
