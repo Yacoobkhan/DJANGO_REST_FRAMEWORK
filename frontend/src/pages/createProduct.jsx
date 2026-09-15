@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { createProduct } from '../services/productService'
+import { useNavigate } from 'react-router-dom'
 
 const CreateProduct = ({ onBack, onProductCreated }) => {
 
+  const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const [price, setPrice] = useState('')
@@ -22,7 +24,7 @@ const CreateProduct = ({ onBack, onProductCreated }) => {
 
       console.log('Created Product:', data)
 
-      onProductCreated(data)
+      navigate('/products')
 
     } catch (error) {
 
@@ -40,7 +42,7 @@ const CreateProduct = ({ onBack, onProductCreated }) => {
   return (
     <div className="p-6">
 
-      <button onClick={onBack} className="mb-5 rounded bg-gray-500 px-4 py-2 text-white">
+      <button onClick={() => navigate('/products')} className="mb-5 rounded bg-gray-500 px-4 py-2 text-white">
         Back to Products
       </button>
 

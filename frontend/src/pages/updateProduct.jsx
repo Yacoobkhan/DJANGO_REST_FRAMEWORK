@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { getProduct, updateProduct } from '../services/productService'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const UpdateProduct = ({ id, onBack, onProductUpdated }) => {
+const UpdateProduct = () => {
 
+   const {id} = useParams()
+   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const [price, setPrice] = useState('')
@@ -48,7 +51,7 @@ const UpdateProduct = ({ id, onBack, onProductUpdated }) => {
 
       console.log('Updated Product:', data)
 
-      onProductUpdated()
+      navigate(`/products/${id}`)
 
     } catch (error) {
 
@@ -75,7 +78,7 @@ const UpdateProduct = ({ id, onBack, onProductUpdated }) => {
     <div className="p-6">
 
       <button
-        onClick={onBack}
+        onClick={() => navigate(`/products/${id}`)}
         className="mb-5 rounded bg-gray-500 px-4 py-2 text-white"
       >
         Back to Product

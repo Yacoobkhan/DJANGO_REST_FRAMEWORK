@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 
-import login from '../services/auth'
+import {login} from '../services/auth'
+import { useNavigate } from 'react-router-dom'
 
 const Login = ({onLogin}) => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const navigate = useNavigate()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -21,6 +23,7 @@ const Login = ({onLogin}) => {
 
       console.log('Login Successful')
       onLogin()
+      navigate('/products')
 
     } catch (error) {
 

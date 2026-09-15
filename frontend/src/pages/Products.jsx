@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { getProducts } from '../services/productService'
 import ProductCard from '../components/ProductCard'
-import ProductDetail from './ProductDetail'
-import CreateProduct from './createProduct'
 
-const Products = () => {
 
-  const[showCreateProduct, setShowCreateProduct] = useState(false)
+const Products = ({onLogout}) => {
+
   const [products, setProducts] = useState([])
-  const [selectedProductId, setSelectedProductId] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  const navigate = useNavigate()
 
   const loadProducts = async () => {
     setLoading(true)
@@ -37,28 +37,6 @@ const Products = () => {
     loadProducts()
   },[])
 
-  if(showCreateProduct){
-    return(
-      <CreateProduct onBack={() => setShowCreateProduct(false)}
-      onProductCreated={() => {
-        setShowCreateProduct(false)
-        loadProducts()
-      }}
-      />
-    )
-  }
-
-  if(selectedProductId){
-    return (
-        <ProductDetail
-        id={selectedProductId}
-        onBack = { () => setSelectedProductId(null)}
-        />
-    )
-  }
-
-
-
  return (
   <div className="p-6">
 
@@ -72,9 +50,11 @@ const Products = () => {
         Get Products
       </button>
 
-      <button onClick={() => setShowCreateProduct(true)}  className='rounded bg-green-500 px-4 py-2 text-white'> Create Product</button>
+      <button onClick={() => navigate('/products/create')}  className='rounded bg-green-500 px-4 py-2 text-white'> Create Product</button>
 
-
+      <button onClick={onLogout} className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600">
+        Logout
+      </button>
 
     </div>
 
@@ -96,7 +76,7 @@ const Products = () => {
         <ProductCard
           key={product.pk}
           product={product}
-          onViewDetails={() => setSelectedProductId(product.pk)}
+          onViewDetails={() => navigate(`/products/${product.pk}`)}
         />
       ))}
 

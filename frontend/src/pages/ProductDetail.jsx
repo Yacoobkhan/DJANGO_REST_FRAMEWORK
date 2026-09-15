@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { getProduct, deleteProduct } from '../services/productService'
-import UpdateProduct from './updateProduct'
+import { useNavigate, useParams } from 'react-router-dom'
 
 
-const ProductDetail = ({ id, onBack }) => {
+const ProductDetail = () => {
 
+  const {id} = useParams()
+  const navigate = useNavigate()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -26,7 +28,7 @@ const ProductDetail = ({ id, onBack }) => {
 
     console.log('Product Deleted')
 
-    onBack()
+    navigate('/products')
 
   } catch (error) {
 
@@ -80,32 +82,18 @@ const ProductDetail = ({ id, onBack }) => {
     )
   }
 
-
-  if (showUpdateProduct) {
-  return (
-    <UpdateProduct
-      id={id}
-      onBack={() => setShowUpdateProduct(false)}
-      onProductUpdated={() => {
-        setShowUpdateProduct(false)
-        loadProduct()
-      }}
-    />
-  )
-}
-
   return (
     <div className="p-6">
 
       <button
-        onClick={onBack}
+        onClick={() => navigate('/products')}
         className="mb-6 rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
       >
         ← Back to Products
       </button>
 
       <button
-          onClick={() => setShowUpdateProduct(true)}
+          onClick={() => navigate(`/products/${id}/update`)}
           className="mb-6 ml-3 rounded bg-green-500 px-4 py-2 text-white"
         >
           Update Product

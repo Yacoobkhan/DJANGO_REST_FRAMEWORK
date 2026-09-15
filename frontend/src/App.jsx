@@ -1,34 +1,27 @@
-// import React, { useState } from 'react'
-// import Login from './pages/Login'
-// import Products from './pages/Products'
-
-// const App = () => {
-
-//   const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-//   if (!isLoggedIn) {
-//     return (
-//       <Login onLogin={() => setIsLoggedIn(true)} />
-//     )
-//   }
-
-//   return (
-//     <Products />
-//   )
-// }
-
-// export default App
-
 import React, { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
 import Products from './pages/Products'
+import ProductDetail from './pages/ProductDetail'
+import UpdateProduct from './pages/updateProduct'
+import CreateProduct from './pages/createProduct'
 
 const App = () => {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem('access_token')
+  )
 
-  if (!isLoggedIn) {
-    return (
+  const handleLogout = () => {
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+
+    setIsLoggedIn(false)
+  }
+
+  return (
+    <BrowserRouter>
+
       <div className="min-h-screen bg-gray-100">
 
         <header className="border-b bg-white px-6 py-4">
@@ -37,28 +30,58 @@ const App = () => {
           </h1>
         </header>
 
-        <main className="p-6">
-          <Login onLogin={() => setIsLoggedIn(true)} />
-        </main>
+        <Routes>
+
+          <Route
+            path="/"
+            element={
+              <Login
+                onLogin={() => setIsLoggedIn(true)}
+              />
+            }
+          />
+
+          <Route
+            path="/products"
+            element={
+              isLoggedIn ? <Products onLogout={handleLogout} /> : <Login onLogin={() => setIsLoggedIn(true)} />
+            }
+          />
+
+          <Route
+            path="/products/create"
+            element={
+              isLoggedIn ? (
+                <CreateProduct />
+              ) : (
+                <Login onLogin={() => setIsLoggedIn(true)} />
+              )
+            }
+          />
+
+          <Route
+            path="/products/:id"
+            element={
+              isLoggedIn ? <ProductDetail /> : <Login onLogin={() => setIsLoggedIn(true)} />
+            }
+          />
+          
+          <Route
+            path="/products/:id/update"
+            element={
+              isLoggedIn ? (
+                <UpdateProduct />
+              ) : (
+                <Login onLogin={() => setIsLoggedIn(true)} />
+              )
+            }
+          />
+
+        </Routes>
 
       </div>
-    )
-  }
 
-  return (
-    <div className="min-h-screen bg-gray-100">
-
-      <header className="border-b bg-white px-6 py-4">
-        <h1 className="text-xl font-bold">
-          Product App
-        </h1>
-      </header>
-
-      <main>
-        <Products />
-      </main>
-
-    </div>
+    </BrowserRouter>
   )
 }
 
