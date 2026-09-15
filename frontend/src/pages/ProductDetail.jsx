@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { getProduct } from '../services/productService'
+import { getProduct, deleteProduct } from '../services/productService'
 import UpdateProduct from './updateProduct'
+
 
 const ProductDetail = ({ id, onBack }) => {
 
@@ -8,6 +9,33 @@ const ProductDetail = ({ id, onBack }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [showUpdateProduct, setShowUpdateProduct] = useState(false)
+
+  const handleDelete = async () => {
+
+  const confirmDelete = window.confirm(
+    'Are you sure you want to delete this product?'
+  )
+
+  if (!confirmDelete) {
+    return
+  }
+
+  try {
+
+    await deleteProduct(id)
+
+    console.log('Product Deleted')
+
+    onBack()
+
+  } catch (error) {
+
+    console.log('Delete Product Error:', error.message)
+
+    setError(error.message)
+
+  }
+}
 
   const loadProduct = async () => {
 
@@ -82,6 +110,13 @@ const ProductDetail = ({ id, onBack }) => {
         >
           Update Product
         </button>
+
+        <button
+        onClick={handleDelete}
+        className="mb-6 ml-3 rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+      >
+        Delete Product
+      </button>
 
       <div className="max-w-2xl rounded border bg-white p-6">
 

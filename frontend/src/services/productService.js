@@ -113,5 +113,32 @@ const updateProduct = async (id, title, body, price) => {
   return data
 }
 
+const deleteProduct = async (id) => {
 
-export {getProducts, getProduct, createProduct, updateProduct}
+  const accessToken = localStorage.getItem('access_token')
+
+  const response = await fetch(`${API_BASE_URL}/products/${id}/destroy`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+
+  if (!response.ok) {
+
+    const data = await response.json()
+
+    console.log('Delete Product Error:', data)
+
+    throw new Error(
+      data.detail || 'Failed to delete product'
+    )
+  }
+
+  console.log('Product Deleted Successfully')
+
+  return true
+}
+
+
+export {getProducts, getProduct, createProduct, updateProduct, deleteProduct}
