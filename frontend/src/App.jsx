@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login'
 import Products from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
 import UpdateProduct from './pages/updateProduct'
 import CreateProduct from './pages/createProduct'
 import Search from './pages/Search'
+import Articles from './pages/Articles'
+import ArticleDetails from './pages/ArticleDetails'
 
 const App = () => {
 
@@ -46,6 +48,20 @@ const App = () => {
             path="/products"
             element={
               isLoggedIn ? <Products onLogout={handleLogout} /> : <Login onLogin={() => setIsLoggedIn(true)} />
+            }
+          />
+
+          <Route
+            path='/articles'
+            element={
+              isLoggedIn ? <Articles /> : <Login onLogin={() => setIsLoggedIn(true)} />
+            }
+          />
+
+          <Route
+            path='/articles/:id'
+            element={
+              isLoggedIn ? <ArticleDetails /> : <Navigate to="/"/>
             }
           />
 
