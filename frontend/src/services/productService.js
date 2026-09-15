@@ -20,4 +20,61 @@ const getProducts = async() =>{
     return data
 }
 
-export default getProducts
+const getProduct = async (id) => {
+
+  const accessToken = localStorage.getItem('access_token')
+
+  const response = await fetch(`${API_BASE_URL}/products/${id}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+  const data = await response.json()
+
+  console.log('Product Detail Response: ',data)
+
+  if(!response.ok){
+    throw new Error(data.detail || 'Failed to fetch Product')
+  }
+
+  return data
+}
+
+const createProduct = async (title, body, price) => {
+
+  const accessToken = localStorage.getItem('access_token')
+
+  const response = await fetch(`${API_BASE_URL}/products/create`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      title: title,
+      body: body,
+      price: price,
+    }),
+  })
+
+  const data = await response.json()
+
+  console.log('Create Product Response:', data)
+   console.log('Create Product Status:', response.status)
+
+  if (!response.ok) {
+    console.log('Create Product Error:', data)
+    throw new Error(
+      data.detail ||
+      data.title ||
+      data.body ||
+      data.price ||
+      'Failed to create product'
+    )
+  }
+
+  return data
+}
+
+
+export {getProducts, getProduct, createProduct}

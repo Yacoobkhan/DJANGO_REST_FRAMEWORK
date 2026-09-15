@@ -21,7 +21,7 @@ class ProductCreateAPIView(StaffEditorPermissionMixin,generics.CreateAPIView):
         content = serializer.validated_data.get('content')  or None
         if content is None:
             content = title 
-        serializer.save(content = content)
+        serializer.save(user=self.request.user,content = content)
 
 product_create_view = ProductCreateAPIView.as_view()
 

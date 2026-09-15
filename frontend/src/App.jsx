@@ -1,32 +1,63 @@
-import React from 'react'
-import API_BASE_URL from './services/api'
+// import React, { useState } from 'react'
+// import Login from './pages/Login'
+// import Products from './pages/Products'
+
+// const App = () => {
+
+//   const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+//   if (!isLoggedIn) {
+//     return (
+//       <Login onLogin={() => setIsLoggedIn(true)} />
+//     )
+//   }
+
+//   return (
+//     <Products />
+//   )
+// }
+
+// export default App
+
+import React, { useState } from 'react'
 import Login from './pages/Login'
-import getProducts from './services/productService'
+import Products from './pages/Products'
 
 const App = () => {
 
-  // const testBackend = async () =>{
-  //   const response = await fetch(`${API_BASE_URL}/`)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  //   const data = await response.json()
-  //   console.log(data)
-  // }
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-gray-100">
 
-  const testProducts = async() =>{
-    try{
-      const data = await getProducts()
+        <header className="border-b bg-white px-6 py-4">
+          <h1 className="text-xl font-bold">
+            Product App
+          </h1>
+        </header>
 
-      console.log('Products: ',data)
-    }catch(error){
-      console.log('Product Error:',error.message)
-    }
+        <main className="p-6">
+          <Login onLogin={() => setIsLoggedIn(true)} />
+        </main>
+
+      </div>
+    )
   }
 
   return (
-    <div>
-      <Login />
+    <div className="min-h-screen bg-gray-100">
 
-      <button onClick={testProducts}>Get Products</button>
+      <header className="border-b bg-white px-6 py-4">
+        <h1 className="text-xl font-bold">
+          Product App
+        </h1>
+      </header>
+
+      <main>
+        <Products />
+      </main>
+
     </div>
   )
 }
