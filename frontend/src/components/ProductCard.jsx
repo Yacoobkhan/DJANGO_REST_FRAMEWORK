@@ -17,6 +17,10 @@ const ProductCard = ({ product, onViewDetails }) => {
         Price: ₹{product.price}
       </p>
 
+      <p className="mt-2 font-semibold text-green-600">
+        Sale Price: ₹{product.sale_price}
+      </p>
+
       <button
         onClick={() => onViewDetails()}
         className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"

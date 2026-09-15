@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { getProduct } from '../services/productService'
+import UpdateProduct from './updateProduct'
 
 const ProductDetail = ({ id, onBack }) => {
 
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [showUpdateProduct, setShowUpdateProduct] = useState(false)
 
   const loadProduct = async () => {
 
@@ -50,6 +52,20 @@ const ProductDetail = ({ id, onBack }) => {
     )
   }
 
+
+  if (showUpdateProduct) {
+  return (
+    <UpdateProduct
+      id={id}
+      onBack={() => setShowUpdateProduct(false)}
+      onProductUpdated={() => {
+        setShowUpdateProduct(false)
+        loadProduct()
+      }}
+    />
+  )
+}
+
   return (
     <div className="p-6">
 
@@ -59,6 +75,13 @@ const ProductDetail = ({ id, onBack }) => {
       >
         ← Back to Products
       </button>
+
+      <button
+          onClick={() => setShowUpdateProduct(true)}
+          className="mb-6 ml-3 rounded bg-green-500 px-4 py-2 text-white"
+        >
+          Update Product
+        </button>
 
       <div className="max-w-2xl rounded border bg-white p-6">
 

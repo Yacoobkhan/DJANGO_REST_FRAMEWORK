@@ -76,5 +76,42 @@ const createProduct = async (title, body, price) => {
   return data
 }
 
+const updateProduct = async (id, title, body, price) => {
 
-export {getProducts, getProduct, createProduct}
+  const accessToken = localStorage.getItem('access_token')
+
+  const response = await fetch(`${API_BASE_URL}/products/${id}/update`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      title: title,
+      body: body,
+      price: price,
+    }),
+  })
+
+  const data = await response.json()
+
+  console.log('Update Product Response:', data)
+  console.log('Update Product Status:', response.status)
+
+  if (!response.ok) {
+    console.log('Update Product Error:', data)
+
+    throw new Error(
+      data.detail ||
+      data.title ||
+      data.body ||
+      data.price ||
+      'Failed to update product'
+    )
+  }
+
+  return data
+}
+
+
+export {getProducts, getProduct, createProduct, updateProduct}
