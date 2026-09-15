@@ -5,6 +5,7 @@ import { createArticle } from '../services/articleServices'
 const CreateArticle = () => {
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
+    const [image,setImage] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
@@ -22,7 +23,7 @@ const CreateArticle = () => {
         setError('')
 
         try {
-            const data = await createArticle(title, body)
+            const data = await createArticle(title, body, image)
 
             console.log('Create Article Response:', data)
 
@@ -63,6 +64,17 @@ const CreateArticle = () => {
 
                     <div className="mb-4">
                         <label className="mb-2 block font-medium">
+                            Image
+                        </label>
+
+                         <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(event) => setImage(event.target.files[0])}
+                            className="w-full rounded border border-gray-300 p-2"
+                        />
+
+                         <label className="mb-2 block font-medium">
                             Title
                         </label>
 

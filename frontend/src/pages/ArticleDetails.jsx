@@ -84,6 +84,16 @@ const ArticleDetails = () =>{
         {!loading && !error && article && (
           <div className="rounded-lg border border-gray-300 p-6 shadow-sm">
 
+            {article.image && (
+              <div className="mb-8 flex h-96 w-full items-center justify-center overflow-hidden rounded-lg bg-gray-100 p-4">
+                <img
+                  src={article.image}
+                  alt={article.title}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            )}
+
             <h1 className="mb-4 text-3xl font-bold">
               {article.title}
             </h1>

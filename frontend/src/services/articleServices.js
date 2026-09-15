@@ -101,19 +101,24 @@ const getArticle = async(id) =>{
     }
 }
 
-const createArticle = async (title, body) => {
+const createArticle = async (title, body, image) => {
+
     let accessToken = localStorage.getItem('access_token')
+
+    const formData = new FormData()
+    formData.append('title',title)
+    formData.append('body',body)
+    if(image){
+        formData.append('image',image)
+    }
+    
 
     const response = await fetch(`${API_BASE_URL}/articles/create`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
+        headers:{
+            Authorization:`Bearer ${accessToken}`
         },
-        body: JSON.stringify({
-            title: title,
-            body: body
-        })
+        body: formData
     })
 
     if (response.status !== 401 && response.status !== 403) {
@@ -136,13 +141,9 @@ const createArticle = async (title, body) => {
             {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${accessToken}`
                 },
-                body: JSON.stringify({
-                    title: title,
-                    body: body
-                })
+                body: formData
             }
         )
 
@@ -168,19 +169,23 @@ const createArticle = async (title, body) => {
     }
 }
 
-const updateArticle = async (id, title, body) => {
+const updateArticle = async (id, title, body,image) => {
     let accessToken = localStorage.getItem('access_token')
+
+    const formData = new FormData()
+    formData.append('title',title)
+    formData.append('body',body)
+
+    if(image){
+        formData.append('image',image)
+    }
 
     const response = await fetch(`${API_BASE_URL}/articles/${id}/update`, {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json',
             Authorization: `Bearer ${accessToken}`
         },
-        body: JSON.stringify({
-            title: title,
-            body: body
-        })
+        body: formData
     })
 
     if (response.status !== 401 && response.status !== 403) {

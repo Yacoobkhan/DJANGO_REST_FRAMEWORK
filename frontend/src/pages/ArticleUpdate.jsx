@@ -5,6 +5,7 @@ import { getArticle, updateArticle } from '../services/articleServices'
 const ArticleUpdate = () => {
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
+    const [image, setImage] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
@@ -46,7 +47,7 @@ const ArticleUpdate = () => {
         setError('')
 
         try {
-            const data = await updateArticle(id, title, body)
+            const data = await updateArticle(id, title, body,image)
 
             console.log('Update Article Response:', data)
 
@@ -110,6 +111,19 @@ const ArticleUpdate = () => {
                             placeholder="Enter article body"
                             rows="6"
                             className="w-full rounded border border-gray-300 px-4 py-2"
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="mb-2 block font-medium">
+                            Article Image
+                        </label>
+
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(event) => setImage(event.target.files[0])}
+                            className="w-full rounded border border-gray-300 p-2"
                         />
                     </div>
 

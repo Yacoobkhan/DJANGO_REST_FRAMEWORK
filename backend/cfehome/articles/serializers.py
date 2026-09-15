@@ -13,6 +13,7 @@ class ArticleSerializer(serializers.ModelSerializer):
             'title',
             'is_public',
             'body',
+            'image',
             'path',
             'endpoint',
         ]

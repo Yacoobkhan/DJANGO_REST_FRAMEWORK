@@ -51,7 +51,7 @@ const Articles = () =>{
 
         <form onSubmit={(event) => event.preventDefault()} className="mb-6 flex gap-3">
 
-        <input typpe="text" 
+        <input type="text" 
         placeholder="search article" 
         value={searchQuery} 
         onChange={(event) => setSearchQuery(event.target.value)} 
@@ -106,6 +106,17 @@ const Articles = () =>{
               key={article.pk}
               className="rounded-lg border border-gray-300 p-5 shadow-sm"
             >
+
+              {article.image && (
+                <div className="mb-4 flex h-64 w-full items-center justify-center overflow-hidden rounded-lg bg-gray-100 p-4">
+                  <img
+                    src={article.image}
+                    alt={article.title}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+              )}
+
               <h2 className="mb-2 text-xl font-semibold">
                 {article.title}
               </h2>
