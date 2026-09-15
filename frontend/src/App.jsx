@@ -10,6 +10,7 @@ import Articles from './pages/Articles'
 import ArticleDetails from './pages/ArticleDetails'
 import ArticleCreation from './pages/ArticleCreation'
 import ArticleUpdate from './pages/ArticleUpdate'
+import Navbar from './components/Navbar'
 
 const App = () => {
 
@@ -31,7 +32,7 @@ const App = () => {
 
         <header className="border-b bg-white px-6 py-4">
           <h1 className="text-xl font-bold">
-            Product App
+            {isLoggedIn && <Navbar onLogout={handleLogout} />}
           </h1>
         </header>
 
