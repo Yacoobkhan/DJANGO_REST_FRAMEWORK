@@ -124,6 +124,17 @@ const Search = () => {
               key={product.objectID}
               className="rounded-lg border bg-white p-4 shadow"
             >
+
+              {product.image && (
+                <div className="mb-4 flex h-64 w-full items-center justify-center overflow-hidden rounded-lg bg-gray-100 p-4">
+                  <img
+                    src={`http://localhost:8000/products/${product.image}`}
+                    alt={product.title}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+              )}
+              
               <h2 className="text-xl font-semibold">
                 {product.title}
               </h2>

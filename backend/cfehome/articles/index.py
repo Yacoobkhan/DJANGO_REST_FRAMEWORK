@@ -16,6 +16,7 @@ class ArtcileIndex(AlgoliaIndex):
         'publish_date',
         'path',
         'endpoint',
+        'image',
     ]
     settings = {
         'searchableAttributes': ['title', 'body'],
