@@ -1,5 +1,5 @@
 import react, { useState, useEffect } from 'react'
-import { getArticle } from '../services/articleServices'
+import { getArticle, deleteArticle } from '../services/articleServices'
 import { useNavigate,useParams } from 'react-router-dom'
 
 
@@ -31,6 +31,32 @@ const ArticleDetails = () =>{
     useEffect(() =>{
         loadArticle()
     },[id])
+
+    const handleDelete = async () => {
+    const confirmed = window.confirm(
+        'Are you sure you want to delete this article?'
+    )
+
+    if (!confirmed) {
+        return
+    }
+
+    setLoading(true)
+    setError('')
+
+    try {
+        await deleteArticle(id)
+
+        console.log('Article deleted successfully')
+
+        navigate('/articles')
+    } catch (error) {
+        console.log('Article Delete Error:', error.message)
+        setError(error.message)
+    } finally {
+        setLoading(false)
+    }
+}
 
     return(
       <div className="min-h-screen p-6">
@@ -74,6 +100,21 @@ const ArticleDetails = () =>{
               Public: {article.is_public ? 'Yes' : 'No'}
             </p>
 
+            <button
+                onClick={() => navigate(`/articles/${id}/update`)}
+                className="mt-4 rounded bg-blue-600 px-4 py-2 text-white"
+            >
+                Update Article
+            </button>
+
+
+            <button 
+              onClick = {handleDelete}
+              disabled={loading}
+               className="mt-4 ml-3 rounded bg-red-600 px-4 py-2 text-white disabled:opacity-50"
+            >
+              Delete Article
+            </button>
           </div>
         )}
 

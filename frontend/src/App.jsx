@@ -9,6 +9,7 @@ import Search from './pages/Search'
 import Articles from './pages/Articles'
 import ArticleDetails from './pages/ArticleDetails'
 import ArticleCreation from './pages/ArticleCreation'
+import ArticleUpdate from './pages/ArticleUpdate'
 
 const App = () => {
 
@@ -70,6 +71,13 @@ const App = () => {
             path='/articles/:id'
             element={
               isLoggedIn ? <ArticleDetails /> : <Navigate to="/"/>
+            }
+          />
+
+          <Route
+            path='/articles/:id/update'
+            element={
+              isLoggedIn ? <ArticleUpdate /> : <Navigate to="/" />
             }
           />
 
