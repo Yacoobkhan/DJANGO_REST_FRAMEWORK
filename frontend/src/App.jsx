@@ -11,6 +11,7 @@ import ArticleDetails from './pages/ArticleDetails'
 import ArticleCreation from './pages/ArticleCreation'
 import ArticleUpdate from './pages/ArticleUpdate'
 import Navbar from './components/Navbar'
+import Home from './pages/Home'
 
 const App = () => {
 
@@ -30,13 +31,20 @@ const App = () => {
 
       <div className="min-h-screen bg-gray-100">
 
-        <header className="border-b bg-white px-6 py-4">
+        {/* <header className="border-b bg-white px-6 py-4">
           <h1 className="text-xl font-bold">
-            {isLoggedIn && <Navbar onLogout={handleLogout} />}
+            {isLoggedIn && <Navbar onLogout={handleLogout}/>}
           </h1>
-        </header>
+        </header> */}
 
         <Routes>
+
+          <Route
+            path="/Home"
+            element={
+              isLoggedIn ? <Home /> : <Navigate to ="/" />
+            }
+          />
 
           <Route
             path="/"
@@ -50,14 +58,14 @@ const App = () => {
           <Route
             path="/products"
             element={
-              isLoggedIn ? <Products onLogout={handleLogout} /> : <Login onLogin={() => setIsLoggedIn(true)} />
+              isLoggedIn ? <Products  /> : <Navigate to='/' />
             }
           />
 
           <Route
             path='/articles'
             element={
-              isLoggedIn ? <Articles /> : <Login onLogin={() => setIsLoggedIn(true)} />
+              isLoggedIn ? <Articles /> : <Navigate to='/' />
             }
           />
 

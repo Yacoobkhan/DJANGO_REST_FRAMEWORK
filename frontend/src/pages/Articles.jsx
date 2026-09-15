@@ -4,6 +4,7 @@ import { getArticles } from '../services/articleServices'
 
 
 const Articles = () =>{
+    const [searchQuery,setSearchQuery] = useState('')
     const [articles,setArticles] = useState([])
     const [loading,setLoading] = useState(false)
     const [error, setError] = useState('')
@@ -34,9 +35,32 @@ const Articles = () =>{
     loadArticles()
   }, [])
 
+
+  const filteredarticles = articles.filter((article) =>{
+    const query = searchQuery.toLowerCase().trim()
+
+    return (
+      article.title.toLowerCase().includes(query) ||
+      article.body.toLowerCase().includes(query)
+    )
+  })
+
   return (
     <div className="min-h-screen p-6">
       <div className="mx-auto max-w-4xl">
+
+        <form onSubmit={(event) => event.preventDefault()} className="mb-6 flex gap-3">
+
+        <input typpe="text" 
+        placeholder="search article" 
+        value={searchQuery} 
+        onChange={(event) => setSearchQuery(event.target.value)} 
+        className="flex-1 rounded border border-gray-300 px-4 py-2"/>
+
+        <button type="submit" 
+         className="rounded bg-blue-600 px-5 py-2 text-white">Search</button>
+
+      </form>
 
         <button
           onClick={() => navigate('/products')}
@@ -77,7 +101,7 @@ const Articles = () =>{
         )}
 
         <div className="space-y-4">
-          {articles.map((article) => (
+          {filteredarticles.map((article) => (
             <div
               key={article.pk}
               className="rounded-lg border border-gray-300 p-5 shadow-sm"

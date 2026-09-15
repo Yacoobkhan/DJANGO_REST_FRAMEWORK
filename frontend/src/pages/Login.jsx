@@ -23,7 +23,7 @@ const Login = ({onLogin}) => {
 
       console.log('Login Successful')
       onLogin()
-      navigate('/products')
+      navigate('/home')
 
     } catch (error) {
 

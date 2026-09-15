@@ -4,7 +4,7 @@ import { getProducts } from '../services/productService'
 import ProductCard from '../components/ProductCard'
 
 
-const Products = ({onLogout}) => {
+const Products = () => {
 
   const [searchQuery,setSearchQuery] = useState('')
   const [products, setProducts] = useState([])
@@ -32,7 +32,7 @@ const Products = ({onLogout}) => {
 
       console.log('Products:', data)
 
-      setProducts(data.results)
+      setProducts(data.results || [])
 
     } catch (error) {
       console.log('Product Error:', error.message)
@@ -82,10 +82,6 @@ const Products = ({onLogout}) => {
       </button>
 
       <button onClick={() => navigate('/products/create')}  className='rounded bg-green-500 px-4 py-2 text-white'> Create Product</button>
-
-      <button onClick={onLogout} className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600">
-        Logout
-      </button>
 
     </div>
 

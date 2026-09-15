@@ -2,44 +2,47 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Navbar = ({ onLogout }) => {
-    const navigate = useNavigate()
 
-    return (
-        <nav className="border-b bg-white px-6 py-4">
-            <div className="mx-auto flex max-w-6xl items-center justify-between">
+  const navigate = useNavigate()
 
-                <h1 className="text-xl font-bold">
-                    Product App
-                </h1>
+  return (
+    <nav className="border-b bg-white px-6 py-4">
 
-                <div className="flex items-center gap-3">
+      <div className="mx-auto flex max-w-6xl items-center justify-between">
 
-                    <button
-                        onClick={() => navigate('/products')}
-                        className="rounded bg-blue-600 px-4 py-2 text-white"
-                    >
-                        Products
-                    </button>
+        <h1 className="text-xl font-bold">
+          Product App
+        </h1>
 
-                    <button
-                        onClick={() => navigate('/articles')}
-                        className="rounded bg-gray-600 px-4 py-2 text-white"
-                    >
-                        Articles
-                    </button>
+        <div className="flex gap-3">
 
-                    <button
-                        onClick={onLogout}
-                        className="rounded bg-red-600 px-4 py-2 text-white"
-                    >
-                        Logout
-                    </button>
+          <button
+            onClick={() => navigate('/products')}
+            className="rounded bg-blue-600 px-4 py-2 text-white"
+          >
+            Products
+          </button>
 
-                </div>
+          <button
+            onClick={() => navigate('/articles')}
+            className="rounded bg-gray-600 px-4 py-2 text-white"
+          >
+            Articles
+          </button>
 
-            </div>
-        </nav>
-    )
+          <button
+            onClick={onLogout}
+            className="rounded bg-red-600 px-4 py-2 text-white"
+          >
+            Logout
+          </button>
+
+        </div>
+
+      </div>
+
+    </nav>
+  )
 }
 
 export default Navbar
