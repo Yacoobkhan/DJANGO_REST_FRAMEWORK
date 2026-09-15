@@ -87,20 +87,23 @@ const getProduct = async (id) => {
 }
 
 
-const createProduct = async (title, body, price) => {
+const createProduct = async (title, body, price,image) => {
+
+  const formData = new FormData()
+  
+  formData.append('title',title)
+  formData.append('body',body)
+  formData.append('price',price)
+
+  if(image){
+    formData.append('image',image)
+  }
 
   const response = await fetchWithAuth(
     `${API_BASE_URL}/products/create`,
     {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title: title,
-        body: body,
-        price: price,
-      }),
+      body: formData
     }
   )
 
@@ -126,20 +129,23 @@ const createProduct = async (title, body, price) => {
 }
 
 
-const updateProduct = async (id, title, body, price) => {
+const updateProduct = async (id, title, body, price, image) => {
+
+  const formData = new FormData()
+
+  formData.append('title', title)
+  formData.append('body', body)
+  formData.append('price', price)
+
+  if (image) {
+    formData.append('image', image)
+  }
 
   const response = await fetchWithAuth(
     `${API_BASE_URL}/products/${id}/update`,
     {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title: title,
-        body: body,
-        price: price,
-      }),
+      method: 'PUT',
+      body: formData
     }
   )
 
@@ -149,7 +155,6 @@ const updateProduct = async (id, title, body, price) => {
   console.log('Update Product Status:', response.status)
 
   if (!response.ok) {
-
     console.log('Update Product Error:', data)
 
     throw new Error(
@@ -157,6 +162,7 @@ const updateProduct = async (id, title, body, price) => {
       data.title ||
       data.body ||
       data.price ||
+      data.image ||
       'Failed to update product'
     )
   }

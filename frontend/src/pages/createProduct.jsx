@@ -8,6 +8,7 @@ const CreateProduct = ({ onBack, onProductCreated }) => {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const [price, setPrice] = useState('')
+  const [image,setImage] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -20,7 +21,7 @@ const CreateProduct = ({ onBack, onProductCreated }) => {
 
     try {
 
-      const data = await createProduct(title, body, price)
+      const data = await createProduct(title, body, price,image)
 
       console.log('Created Product:', data)
 
@@ -59,6 +60,21 @@ const CreateProduct = ({ onBack, onProductCreated }) => {
           <textarea placeholder="Product description" value={body} onChange={(event) => setBody(event.target.value)} className="mb-4 w-full border p-2" rows="4"/>
 
           <input type="number" placeholder="Price" value={price} onChange={(event) => setPrice(event.target.value)} className="mb-4 w-full border p-2"/>
+
+           <div className="mb-4">
+
+            <label className="mb-2 block font-medium">
+              Product Image
+            </label>
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(event) => setImage(event.target.files[0])}
+              className="w-full rounded border border-gray-300 p-2"
+            />
+
+          </div>
 
           {error && (
             <p className="mb-4 text-red-500">

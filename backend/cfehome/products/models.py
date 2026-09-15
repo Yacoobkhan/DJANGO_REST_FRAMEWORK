@@ -38,6 +38,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=15,decimal_places=2,default=99.99)
     public = models.BooleanField(default=True)
     publish_timestamp = models.DateTimeField(default=timezone.now)
+    image = models.ImageField(upload_to='img/',null = True,blank = True)
 
     def get_absolute_url(self):
         return f"/api/products/{self.pk}/"

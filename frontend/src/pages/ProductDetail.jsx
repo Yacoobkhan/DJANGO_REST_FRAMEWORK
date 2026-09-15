@@ -106,7 +106,17 @@ const ProductDetail = () => {
         Delete Product
       </button>
 
-      <div className="max-w-2xl rounded border bg-white p-6">
+      <div className="max-w-2xl rounded-lg border bg-white p-6 shadow-sm">
+
+        {product.image && (
+          <div className="mb-8 flex h-96 w-full items-center justify-center overflow-hidden rounded-lg bg-gray-50 p-4">
+            <img
+              src={product.image}
+              alt={product.title}
+              className="h-full w-full object-contain"
+            />
+          </div>
+        )}
 
         <h1 className="text-2xl font-bold">
           {product.title}

@@ -9,6 +9,7 @@ const UpdateProduct = () => {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   const [price, setPrice] = useState('')
+  const [image,setImage] = useState(null)
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState('')
@@ -47,7 +48,7 @@ const UpdateProduct = () => {
 
     try {
 
-      const data = await updateProduct(id, title, body, price)
+      const data = await updateProduct(id, title, body, price,image)
 
       console.log('Updated Product:', data)
 
@@ -112,6 +113,19 @@ const UpdateProduct = () => {
             onChange={(event) => setPrice(event.target.value)}
             className="mb-4 w-full border p-2"
           />
+
+          <div className="mb-4">
+            <label className="mb-2 block font-medium">
+              Product Image
+            </label>
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(event) => setImage(event.target.files[0])}
+              className="w-full rounded border border-gray-300 p-2"
+            />
+          </div>
 
           {error && (
             <p className="mb-4 text-red-500">

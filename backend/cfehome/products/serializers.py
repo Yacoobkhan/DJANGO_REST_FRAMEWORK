@@ -53,6 +53,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'url',
             'edit_url',
             'pk',
+            'image',
             'title',
             'body',
             'price',

@@ -169,3 +169,6 @@ CORS_ALLOWED_ORIGINS=[
     'http://localhost:8111',
     'http://localhost:5173'
 ]
+
+MEDIA_URL='/products/'
+MEDIA_ROOT=BASE_DIR/'products'
