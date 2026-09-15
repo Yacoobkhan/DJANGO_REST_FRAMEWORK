@@ -13,7 +13,8 @@ class ProductIndex(AlgoliaIndex):
         'price',
         'user',
         'public',
-        'endpoint'
+        'endpoint',
+        'image',
     ]
 
     settings={
