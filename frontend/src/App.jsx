@@ -8,6 +8,7 @@ import CreateProduct from './pages/createProduct'
 import Search from './pages/Search'
 import Articles from './pages/Articles'
 import ArticleDetails from './pages/ArticleDetails'
+import ArticleCreation from './pages/ArticleCreation'
 
 const App = () => {
 
@@ -59,6 +60,13 @@ const App = () => {
           />
 
           <Route
+            path='/articles/create'
+            element={
+              isLoggedIn ? <ArticleCreation /> : <Navigate to="/" />
+            }
+          />
+
+          <Route
             path='/articles/:id'
             element={
               isLoggedIn ? <ArticleDetails /> : <Navigate to="/"/>
@@ -104,6 +112,8 @@ const App = () => {
               )
             }
           />
+
+          
 
         </Routes>
 

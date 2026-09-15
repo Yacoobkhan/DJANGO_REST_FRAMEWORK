@@ -45,9 +45,18 @@ const Articles = () =>{
           ← Back to Products
         </button>
 
-        <h1 className="mb-6 text-3xl font-bold">
-          Articles
-        </h1>
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="text-3xl font-bold">
+            Articles
+          </h1>
+
+          <button
+            onClick={() => navigate('/articles/create')}
+            className="rounded bg-blue-600 px-4 py-2 text-white"
+          >
+            + Create Article
+          </button>
+        </div>
 
         {loading && (
           <p className="text-gray-600">

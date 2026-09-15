@@ -101,4 +101,71 @@ const getArticle = async(id) =>{
     }
 }
 
-export { getArticles, getArticle }
+const createArticle = async (title, body) => {
+    let accessToken = localStorage.getItem('access_token')
+
+    const response = await fetch(`${API_BASE_URL}/articles/create`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({
+            title: title,
+            body: body
+        })
+    })
+
+    if (response.status !== 401 && response.status !== 403) {
+        const data = await response.json()
+
+        if (!response.ok) {
+            throw new Error(data.detail || 'Failed to create article')
+        }
+
+        return data
+    }
+
+    console.log('Access token expired. Refreshing token...')
+
+    try {
+        accessToken = await refreshAccessToken()
+
+        const retryResponse = await fetch(
+            `${API_BASE_URL}/articles/create`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({
+                    title: title,
+                    body: body
+                })
+            }
+        )
+
+        const data = await retryResponse.json()
+
+        if (!retryResponse.ok) {
+            throw new Error(data.detail || 'Failed to create article')
+        }
+
+        return data
+    } catch (error) {
+        console.log(
+            'Article Create Token Refresh Error:',
+            error.message
+        )
+
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
+
+        window.location.href = '/'
+
+        throw error
+    }
+}
+
+export { getArticles, getArticle, createArticle }
