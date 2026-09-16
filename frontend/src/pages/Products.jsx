@@ -11,6 +11,9 @@ const Products = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const [nextUrl, setNextUrl] = useState(null)
+  const [previousUrl, setPreviousUrl] = useState(null)
+
   const navigate = useNavigate()
 
   const handleSearch = (event) => {
@@ -33,6 +36,8 @@ const Products = () => {
       console.log('Products:', data)
 
       setProducts(data.results || [])
+      setNextUrl(data.next)
+      setPreviousUrl(data.previous)
 
     } catch (error) {
       console.log('Product Error:', error.message)
@@ -43,6 +48,29 @@ const Products = () => {
       setLoading(false)
     }
   }
+
+  const handlePageChange = async (url) => {
+  if (!url) return
+
+  setLoading(true)
+  setError('')
+
+  try {
+    const data = await getProducts(url)
+
+    console.log('Pagination Response:', data)
+
+    setProducts(data.results || [])
+    setNextUrl(data.next)
+    setPreviousUrl(data.previous)
+
+  } catch (error) {
+    console.log('Pagination Error:', error.message)
+    setError(error.message)
+  } finally {
+    setLoading(false)
+  }
+}
 
   useEffect(() => {
     loadProducts()
@@ -108,6 +136,24 @@ const Products = () => {
         />
       ))}
 
+    </div>
+
+    <div className="mt-8 flex justify-center gap-4">
+      <button
+        onClick={() => handlePageChange(previousUrl)}
+        disabled={!previousUrl}
+        className="rounded bg-gray-200 px-4 py-2 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Previous
+      </button>
+
+      <button
+        onClick={() => handlePageChange(nextUrl)}
+        disabled={!nextUrl}
+        className="rounded bg-gray-200 px-4 py-2 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Next
+      </button>
     </div>
 
   </div>

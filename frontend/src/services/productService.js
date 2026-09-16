@@ -47,11 +47,9 @@ const fetchWithAuth = async (url, options = {}) => {
 }
 
 
-const getProducts = async () => {
+const getProducts = async (url = `${API_BASE_URL}/products/`) => {
 
-  const response = await fetchWithAuth(
-    `${API_BASE_URL}/products/`
-  )
+  const response = await fetchWithAuth(url)
 
   const data = await response.json()
 
