@@ -1,6 +1,7 @@
 import React, {useState,useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getArticles } from '../services/articleServices'
+import searchArticles from '../services/articleSearchService'
 
 
 const Articles = () =>{
@@ -35,15 +36,27 @@ const Articles = () =>{
     loadArticles()
   }, [])
 
+  useEffect(() => {
+  const loadSearchResults = async () => {
+    if (!searchQuery.trim()) {
+      return
+    }
 
-  const filteredarticles = articles.filter((article) =>{
-    const query = searchQuery.toLowerCase().trim()
+    try {
+      const data = await searchArticles(searchQuery)
 
-    return (
-      article.title.toLowerCase().includes(query) ||
-      article.body.toLowerCase().includes(query)
-    )
-  })
+      console.log('Article Search API Response:', data)
+      console.log('Article Search Hits:', data.hits)
+
+      setArticles(data.hits || [])
+    } catch (error) {
+      console.log('Article Search Error:', error.message)
+      setArticles([])
+    }
+  }
+
+  loadSearchResults()
+}, [searchQuery])
 
   return (
     <div className="min-h-screen p-6">
@@ -101,16 +114,20 @@ const Articles = () =>{
         )}
 
         <div className="space-y-4">
-          {filteredarticles.map((article) => (
+          {articles.map((article) => (
             <div
-              key={article.pk}
+              key={article.pk || article.objectID}
               className="rounded-lg border border-gray-300 p-5 shadow-sm"
             >
 
               {article.image && (
                 <div className="mb-4 flex h-64 w-full items-center justify-center overflow-hidden rounded-lg bg-gray-100 p-4">
                   <img
-                    src={article.image}
+                    src={
+                      article.image.startsWith('http')
+                        ? article.image
+                        : `http://localhost:8000/products/${article.image}`
+                    }
                     alt={article.title}
                     className="h-full w-full object-contain"
                   />

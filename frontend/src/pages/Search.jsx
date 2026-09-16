@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import searchProducts from '../services/searchService'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 const Search = () => {
 
   const navigate = useNavigate()
+  const searchInputRef = useRef(null)
   const [searchParams] = useSearchParams()
   const queryFromUrl = searchParams.get('query') || ''
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState(queryFromUrl)
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(()=>{
+    searchInputRef.current?.focus()
+  },[])
 
   useEffect(() => {
   if (!queryFromUrl.trim()) {
@@ -83,10 +88,11 @@ const Search = () => {
           onSubmit={handleSearch}
           className="mb-6 flex gap-3"
         >
-          <input
-            type="text"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
+          <input type="text" ref={searchInputRef} value={query} onChange={(event) => {
+              const value = event.target.value
+              setQuery(value)
+              navigate(`/search?query=${encodeURIComponent(value)}`)
+            }}
             placeholder="Search products..."
             className="flex-1 rounded border border-gray-300 px-4 py-2"
           />

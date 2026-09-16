@@ -51,17 +51,18 @@ const Products = () => {
  return (
   <div className="p-6">
 
-    <form
-      onSubmit={handleSearch}
-      className="mb-6 flex gap-3"
-    >
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(event) => setSearchQuery(event.target.value)}
+    <form onSubmit={handleSearch} className="mb-6 flex gap-3">
+    <input type="text" value={searchQuery} onChange={(event) => {
+              const value = event.target.value
+              setSearchQuery(value)
+
+              if (value.trim()) {
+                  navigate(`/search?query=${encodeURIComponent(value.trim())}`)
+              }
+          }}
         placeholder="Search products..."
         className="flex-1 rounded border border-gray-300 px-4 py-2"
-      />
+    />
 
       <button
         type="submit"

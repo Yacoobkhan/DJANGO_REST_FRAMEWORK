@@ -18,7 +18,7 @@ class Article(models.Model):
     title = models.CharField(max_length=120)
     body = models.TextField(blank=True, null=True)
     tags = models.TextField(blank=True, null=True, help_text='Use commas to separate tags')
-    make_public = models.BooleanField(default=False, null=True, blank=True)
+    make_public = models.BooleanField(default=True, null=True, blank=True)
     publish_date = models.DateTimeField(auto_now=False, auto_now_add=False, blank=True, null=True)
     image = models.ImageField(upload_to='img/',null=True,blank=True)
 
